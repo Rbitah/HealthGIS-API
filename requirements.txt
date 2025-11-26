@@ -1,0 +1,21 @@
+# Django
+Django>=5.2.8
+
+# PostgreSQL
+psycopg2-binary>=2.9.9
+dj-database-url>=2.1.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Django REST Framework
+djangorestframework>=3.14.0
+djangorestframework-gis>=1.0
+
+# CORS headers
+django-cors-headers>=4.3.0
+
+# GIS utilities
+geopy>=2.4.0
+shapely>=2.0.0
+pyproj>=3.6.0
