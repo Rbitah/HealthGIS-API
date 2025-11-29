@@ -9,18 +9,7 @@ from .serializers import ShapefileLayerSerializer, ShapefileUploadSerializer
 
 
 class ShapefileLayerViewSet(viewsets.ModelViewSet):
-    """
-    ViewSet for managing GIS shapefile layers.
-    
-    Provides CRUD operations for shapefiles:
-    - list: Get all shapefiles
-    - retrieve: Get a specific shapefile
-    - create: Upload a new shapefile
-    - update: Update shapefile metadata
-    - partial_update: Partially update shapefile
-    - destroy: Delete a shapefile
-    - upload_complete: Upload all shapefile components at once
-    """
+   
     queryset = ShapefileLayer.objects.all()
     serializer_class = ShapefileLayerSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]
@@ -36,17 +25,7 @@ class ShapefileLayerViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'], url_path='upload-complete')
     def upload_complete(self, request):
-        """
-        Upload a complete shapefile package with all components.
-        
-        Expected form-data:
-        - name: Layer name
-        - description: Layer description (optional)
-        - shp_file: .shp file (required)
-        - shx_file: .shx file (optional)
-        - dbf_file: .dbf file (optional)
-        - prj_file: .prj file (optional)
-        """
+       
         serializer = ShapefileUploadSerializer(data=request.data)
         
         if serializer.is_valid():
