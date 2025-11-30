@@ -78,7 +78,7 @@ celerybeat.pid
 .dmypy.json
 dmypy.json
 
-# Migrations (optional - uncomment if you don't want to track migrations)
+# Migrations 
 # */migrations/*
 # !*/migrations/__init__.py
 

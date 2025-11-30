@@ -20,6 +20,10 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# GDAL Configuration for Windows
+if os.name == 'nt':  # Windows
+    GDAL_LIBRARY_PATH = r"C:\Program Files\GDAL\bin\gdal.dll"
+    GEOS_LIBRARY_PATH = r"C:\Program Files\GDAL\bin\geos_c.dll"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -42,8 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',  # GeoDjango for spatial data
     'rest_framework',
+    'rest_framework_gis',  # GIS support for REST API
     'corsheaders',
+    'facilities',  # Health facilities app
 ]
 
 MIDDLEWARE = [
@@ -97,7 +104,7 @@ else:
     DATABASES = {
         'default': dj_database_url.config(
             default=DATABASE_URL,
-            engine='django.db.backends.postgresql',
+            engine='django.contrib.gis.db.backends.postgis',  # Use PostGIS for spatial support
         )
     }
 
