@@ -9,7 +9,6 @@ from .serializers import ShapefileLayerSerializer, ShapefileUploadSerializer
 
 
 class ShapefileLayerViewSet(viewsets.ModelViewSet):
-
     queryset = ShapefileLayer.objects.all()
     serializer_class = ShapefileLayerSerializer
     permission_classes = [IsAuthenticated, IsAdminUser]
@@ -25,7 +24,7 @@ class ShapefileLayerViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'], url_path='upload-complete')
     def upload_complete(self, request):
-      #handle shapefile upload completion
+        #handle shapefile upload completion
         serializer = ShapefileUploadSerializer(data=request.data)
         
         if serializer.is_valid():
