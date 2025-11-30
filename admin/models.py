@@ -4,7 +4,7 @@ import os
 
 
 class ShapefileLayer(models.Model):
-    """Model to store GIS shapefile metadata and data"""
+    
     
     GEOMETRY_TYPES = [
         ('Point', 'Point'),
@@ -48,7 +48,7 @@ class ShapefileLayer(models.Model):
         return self.name
     
     def delete(self, *args, **kwargs):
-        """Override delete to remove associated files"""
+        
         # Delete files from storage
         if self.shapefile:
             if os.path.isfile(self.shapefile.path):
