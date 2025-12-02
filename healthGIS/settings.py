@@ -24,14 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if os.name == 'nt':  # Windows
     GDAL_LIBRARY_PATH = r"C:\Program Files\GDAL\bin\gdal.dll"
     GEOS_LIBRARY_PATH = r"C:\Program Files\GDAL\bin\geos_c.dll"
+    # Set GDAL_DATA to help find EPSG spatial reference data
+    os.environ['GDAL_DATA'] = r'C:\Program Files\GDAL\share\gdal'
+    os.environ['PROJ_LIB'] = r'C:\Program Files\GDAL\bin\proj9\share'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-v32eenj*tvq*f3!d=zymac_2qs*0o_%ol$#$8s9@^gjlitv2@&')
 
-# SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
 
@@ -60,12 +59,13 @@ INSTALLED_APPS = [
     'rest_framework_gis',  # GIS support for REST API
     'corsheaders',
     'facilities',  # Health facilities app
+    'admin.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serve static files in production
-    'corsheaders.middleware.CorsMiddleware',  # CORS - must be before CommonMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -157,6 +157,10 @@ STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Media files (User uploaded files)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -169,7 +173,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    # Add your frontend deployment URL here when deployed
 ]
 
 # REST Framework settings

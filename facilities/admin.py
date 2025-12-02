@@ -1,12 +1,30 @@
 from django.contrib import admin
 from django.contrib.gis.admin import GISModelAdmin
+from django.contrib.gis import forms
 from .models import HealthFacility
+
+
+class HealthFacilityAdminForm(forms.ModelForm):
+    """Custom form to handle geometry without transformation"""
+    class Meta:
+        model = HealthFacility
+        fields = '__all__'
+        widgets = {
+            'location': forms.OSMWidget(attrs={
+                'map_width': 800,
+                'map_height': 500,
+                'default_zoom': 6,
+                'default_lon': 34.0,
+                'default_lat': -13.5,
+            })
+        }
 
 
 @admin.register(HealthFacility)
 class HealthFacilityAdmin(GISModelAdmin):
     """Admin interface for Health Facilities with map integration"""
     
+    form = HealthFacilityAdminForm
     list_display = ['name', 'amenity', 'district', 'region', 'beds', 'emergency']
     list_filter = ['amenity', 'district', 'region', 'emergency', 'wheelchair']
     search_fields = ['name', 'district', 'region', 'operator']
@@ -17,7 +35,8 @@ class HealthFacilityAdmin(GISModelAdmin):
             'fields': ('name', 'osm_id', 'osm_type', 'uuid')
         }),
         ('Location', {
-            'fields': ('location', 'latitude', 'longitude', 'district', 'region')
+            'fields': ('location', 'district', 'region', 'latitude', 'longitude'),
+            'description': 'Click on the map to set or update the facility location'
         }),
         ('Classification', {
             'fields': ('amenity', 'healthcare', 'speciality', 'health_amenity')
@@ -44,11 +63,9 @@ class HealthFacilityAdmin(GISModelAdmin):
         }),
     )
     
-    # Enable map widget
-    gis_widget_kwargs = {
-        'attrs': {
-            'default_zoom': 6,
-            'default_lon': 34.0,
-            'default_lat': -13.5,
-        }
-    }
+    # Disable the default map widget to avoid GDAL transform issues
+    default_zoom = 6
+    default_lon = 34.0
+    default_lat = -13.5
+    map_template = 'gis/admin/osm.html'
+    modifiable = True
