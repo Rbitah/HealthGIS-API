@@ -24,6 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 if os.name == 'nt':  # Windows
     GDAL_LIBRARY_PATH = r"C:\Program Files\GDAL\bin\gdal.dll"
     GEOS_LIBRARY_PATH = r"C:\Program Files\GDAL\bin\geos_c.dll"
+    # Set GDAL_DATA to help find EPSG spatial reference data
+    os.environ['GDAL_DATA'] = r'C:\Program Files\GDAL\share\gdal'
+    os.environ['PROJ_LIB'] = r'C:\Program Files\GDAL\bin\proj9\share'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -65,8 +68,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serve static files in production
-    'corsheaders.middleware.CorsMiddleware',  # CORS - must be before CommonMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -157,6 +160,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Media files (User uploaded files)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
