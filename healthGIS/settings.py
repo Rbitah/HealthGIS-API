@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'rest_framework_gis',  # GIS support for REST API
     'corsheaders',
     'facilities',  # Health facilities app
+    'admin.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
